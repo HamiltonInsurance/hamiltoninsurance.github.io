@@ -1,0 +1,421 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>CTO Lecture Series - SQL 101 - 2 How to filter data</title>
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/teal.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>CTO Lecture Series</h1>
+            <h2>SQL 101</h2>
+            <h3>How to filter data</h3>
+            <p class="author">
+                <small>Created by <a href="http://twitter.com/_jim87">James Robinson</a> for <a
+                        href="http://www.openhamilton.com">Hamilton Re</a></small>
+            </p>
+        </section>
+        <section id="recap">
+            <section>
+                <h1>Recap</h1>
+                <ul>
+                    <li class="fragment">Last time we learned how to log in to a SQL server.</li>
+                    <li class="fragment">How to select data from a table.</li>
+                    <li class="fragment">How to select a limited number of results with TOP.</li>
+                    <li class="fragment">How to refer to a column whose name contains a space.</li>
+                </ul>
+            </section>
+            <section data-background="img/slide_01.png"></section>
+            <section>
+                <pre class="sql"><code>SELECT Name, Date FROM atlantic</code></pre>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT TOP 10 * FROM atlantic</code></pre>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT [Maximum Wind] FROM atlantic</code></pre>
+            </section>
+        </section>
+        <section>
+            <h1>WHERE</h1>
+            <ul>
+                <li class="fragment">Used to filter a large number of results.</li>
+                <li class="fragment">When used with text or date must be used with single quotes &apos;.</li>
+                <li class="fragment">When used with numbers no quotes should be used.</li>
+            </ul>
+        </section>
+        <section id="equal">
+            <section>
+                <h1>Equal</h1>
+                <h2>=</h2>
+                <p>Used to compare values that are the same, numeric types only.</p>
+            </section>
+            <section>
+                <h1>Equal</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE time = 600</code></pre>
+            </section>
+        </section>
+        <section id="not-equal">
+            <section>
+                <h1>Not Equal</h1>
+                <h2>&lt;&gt; or !=</h2>
+                <p>Used to Exclude values which are not the same, numeric types only.</p>
+            </section>
+            <section>
+                <h1>Not Equal</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE time &lt;&gt; 600</code></pre>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE time != 600</code></pre>
+            </section>
+        </section>
+        <section id="greater-than">
+            <section>
+                <h1>Greater Than</h1>
+                <h2>&gt;</h2>
+                <p>Used to select rows where the value in the named column is greater than the specified value</p>
+            </section>
+            <section>
+                <h1>Greater Than</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude > 28</code></pre>
+            </section>
+        </section>
+        <section id="less-than">
+            <section>
+                <h1>Less Than</h1>
+                <h2>&lt;</h2>
+                <p>Used to select rows where the value in the named column is less than the specified value</p>
+            </section>
+            <section>
+                <h1>Less Than</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude < 28</code></pre>
+            </section>
+        </section>
+        <section id="greater-than-or-equal">
+            <section>
+                <h1>Greater Than or Equal</h1>
+                <h2>&gt;=</h2>
+                <p>Used to select rows where the value in the named column is greater than or equal to the specified value</p>
+            </section>
+            <section>
+                <h1>Greater Than or Equal</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude >= 28</code></pre>
+            </section>
+        </section>
+        <section id="less-than-or-equal">
+            <section>
+                <h1>Less Than or Equal</h1>
+                <h2>&lt;=</h2>
+                <p>Used to select rows where the value in the named column is less than or equal to the specified value.</p>
+            </section>
+            <section>
+                <h1>Less Than or Equal</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude <= 28</code></pre>
+            </section>
+        </section>
+        <section id="between">
+            <section>
+                <h1>Between</h1>
+                <h2>BETWEEN ... AND ... </h2>
+                <p>Used to select rows where the value in the named column is BETWEEN the specified values.</p>
+            </section>
+            <section>
+                <h1>Between</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude BETWEEN 28 AND 30</code></pre>
+            </section>
+        </section>
+        <section id="in">
+            <section>
+                <h1>In</h1>
+                <h2>IN (...)</h2>
+                <p>Used to select rows where the value in the named column is one of those listed in brackets.</p>
+            </section>
+            <section>
+                <h1>In</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude IN (28, 29, 30)</code></pre>
+            </section>
+        </section>
+        <section id="is">
+            <section>
+                <h1>Is</h1>
+                <h2>IS NULL</h2>
+                <p>Used to select rows where the value in the named column is the special NULL value.</p>
+            </section>
+            <section>
+                <h1>Is</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE Event IS NULL</code></pre>
+            </section>
+        </section>
+        <section id="not">
+            <section>
+                <h1>Not</h1>
+                <h2>NOT</h2>
+                <p>Used to invert any other command.</p>
+            </section>
+            <section>
+                <h1>Not</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE Event IS NOT NULL</code></pre>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE latitude NOT IN (28, 29, 30)</code></pre>
+            </section>
+        </section>
+        <section id="LIKE">
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;PATTERN&apos;</h2>
+                <p>Used to select rows where the value in the named column matches the pattern provided. Normally capitals and lower case do not matter.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;Harvey&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;Harvey&apos;</code></pre>
+                <p>Matches when precisely &apos;HARVEY&apos;.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;Har%&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;Har%&apos;</code></pre>
+                <p>Matches when begins with &apos;HAR&apos;.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;%vey&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;%vey&apos;</code></pre>
+                <p>Matches when ends with &apos;VEY&apos;.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;%rve%&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;%rve%&apos;</code></pre>
+                <p>Matches when contains &apos;RVE&apos; anywhere.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;_ar%y&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;_ar%y&apos;</code></pre>
+                <p>Matches when &apos;ar&apos; are the second and third letters and ends with a &apos;y&apos;.</p>
+            </section>
+            <section>
+                <h1>Like</h1>
+                <h2>LIKE &apos;H_____&apos;</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE name LIKE &apos;H_____&apos;</code></pre>
+                <p>Matches when the column begins with an &apos;H&apos; and has precisely 6 letters.</p>
+            </section>
+        </section>
+        <section id="and">
+            <section>
+                <h1>And</h1>
+                <h2>AND</h2>
+                <p>Used to compound two commands together where both must be satisfied.</p>
+            </section>
+            <section>
+                <h1>And</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE Event IS NOT NULL AND Status LIKE &apos;HU&apos;</code></pre>
+            </section>
+        </section>
+        <section id="or">
+            <section>
+                <h1>Or</h1>
+                <h2>OR</h2>
+                <p>Used to compound two commands together where either may be satisfied.</p>
+            </section>
+            <section>
+                <h1>Or</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE Event IS NOT NULL OR Status LIKE &apos;HU&apos;</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 1</h1>
+            </section>
+            <section>
+                <p>Show the names, dates and times of all the pacific rows that have a maximum wind speed of 80.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Name, Date, Time FROM pacific
+WHERE [Maximum Wind] = 80</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 2</h1>
+            </section>
+            <section>
+                <p>Show all the columns of all the rows that represent atlantic hurricanes.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE Status LIKE &apos;HU&apos;</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 3</h1>
+            </section>
+            <section>
+                <p>Show the latitude and longitude of all the atlantic rows that did not occur at midnight.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Longitude, Latitude FROM atlantic
+WHERE TIME != 0</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 4</h1>
+            </section>
+            <section>
+                <p>Show the latitude and longitude of all the atlantic rows that were not a hurricane.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Latitude, Longitude FROM atlantic
+WHERE Status NOT LIKE &apos;HU&apos;</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 5</h1>
+            </section>
+            <section>
+                <p>Show the first 10 names, dates and times of all the atlantic rows that have a maximum wind speed of 80 and a time of midday</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT TOP 10 Name, Date, Time FROM atlantic
+WHERE [Maximum Wind] = 80 AND Time = 1200</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 6</h1>
+            </section>
+            <section>
+                <p>Show the names, dates and times of all the atlantic rows that have a maximum wind speed between 75 and 125</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Name, Date, Time FROM atlantic
+WHERE [Maximum Wind] BETWEEN 75 AND 125</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 7</h1>
+            </section>
+            <section>
+                <p>Show the date of all the atlantic rows that have a latitude greater than 30 or a longitude less than -100</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Date FROM atlantic
+WHERE latitude > 30 OR longitude < -100</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 8</h1>
+            </section>
+            <section>
+                <p>Show the names of all Hurricanes whose names have exactly 3 letters in</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Name FROM atlantic
+WHERE Name LIKE &apos;___&apos; AND status LIKE &apos;HU&apos;</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 9</h1>
+            </section>
+            <section>
+                <p>Show all the first 100 atlantic rows with all columns where the name contains an &apos;e&apos; and an &apos;i&apos;</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Name, Date, Time FROM atlantic
+WHERE Name LIKE &apos;%e%i%&apos; OR Name LIKE &apos;%i%e%&apos;</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 10</h1>
+            </section>
+            <section>
+                <p>Show all columns of all the atlantic rows that have a maximum wind speed of 80 or a latitude between 28 and 29 and a longitude between -98 and -99</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT * FROM atlantic
+WHERE [Maximum Wind] = 80
+OR (Latitude BETWEEN 28 AND 29 AND Longitude BETWEEN -99 AND -98)</code></pre>
+            </section>
+        </section>
+        <section>
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
+</html>

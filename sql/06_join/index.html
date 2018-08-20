@@ -1,0 +1,325 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>CTO Lecture Series - SQL 101 - 6 How to combine data</title>
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/teal.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>CTO Lecture Series</h1>
+            <h2>SQL 101</h2>
+            <h3>How to combine data</h3>
+            <p class="author">
+                <small>Created by <a href="http://twitter.com/_jim87">James Robinson</a> for <a
+                        href="http://www.openhamilton.com">Hamilton Re</a></small>
+            </p>
+        </section>
+        <section id="recap">
+            <section>
+                <h1>Recap</h1>
+                <ul>
+                    <li class="fragment">Last time we learned how to a bunch of small things.</li>
+                    <li class="fragment">We learned how to order results.</li>
+                    <li class="fragment">We learned how to stick results together vertically.</li>
+                    <li class="fragment">We learned how to do use case statements.</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Order by</h1>
+                <pre class="sql"><code>SELECT Name
+    , Year(Date) year
+    , CASE WHEN Max([Maximum Wind]) > 110 THEN 'Major' ELSE 'Not Major' END major
+FROM atlantic
+GROUP BY Name, Year(Date)
+ORDER BY year DESC, major, name ASC</code></pre>
+            </section>
+            <section>
+                <h1>Union</h1>
+                <pre class="sql"><code>SELECT Year(Date) year FROM atlantic
+GROUP BY Year(Date) HAVING Max([Maximum Wind]) > 150
+UNION
+SELECT Year(Date) year FROM pacific
+GROUP BY Year(Date) HAVING Max([Maximum Wind]) > 150</code></pre>
+            </section>
+            <section>
+                <h1>Case</h1>
+                <pre class="sql"><code>SELECT Year(Date) year, Name,
+CASE
+    WHEN MIN([Minimum Pressure]) < 950 THEN
+      'Low'
+    ELSE
+      'Normal'
+    END pressure
+FROM atlantic
+GROUP BY YEAR(Date), Name
+ORDER BY year DESC
+</code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Logging in</h1>
+            </section>
+            <section data-background="img/slide_01.png"></section>
+        </section>
+        <section id="joins">
+            <section>
+                <h1>Joins</h1>
+                <p>Used to join tables horizontally.</p>
+            </section>
+            <section>
+                <h1>Sample Data</h1>
+                <img src="img/slide_02.png">
+            </section>
+        </section>
+        <section id="inner-join">
+            <section>
+                <h1>Inner Join</h1>
+                <p>Used to get the results only in both tables</p>
+                <img src="img/slide_03.png">
+            </section>
+            <section>
+                <h1>Inner join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+INNER JOIN table_b B
+ON A.name = B.name</code></pre>
+            </section>
+            <section>
+                <h1>Inner Join</h1>
+                <img src="img/slide_04.png">
+            </section>
+        </section>
+        <section id="full-outer-join">
+            <section>
+                <h1>Full Outer Join</h1>
+                <p>Used to get the results that exist in either side.</p>
+                <img src="img/slide_05.png">
+            </section>
+            <section>
+                <h1>Inner join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+FULL OUTER JOIN table_b B
+ON A.name = B.name</code></pre>
+            </section>
+            <section>
+                <h1>Inner Join</h1>
+                <img src="img/slide_06.png">
+            </section>
+        </section>
+        <section id="left-join">
+            <section>
+                <h1>Left Join</h1>
+                <p>Used to get the results in the left table</p>
+                <img src="img/slide_07.png">
+            </section>
+            <section>
+                <h1>Left join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+LEFT OUTER JOIN table_b B
+ON A.name = B.name</code></pre>
+            </section>
+            <section>
+                <h1>Left Join</h1>
+                <img src="img/slide_08.png">
+            </section>
+        </section>
+        <section id="filtered-left-join">
+            <section>
+                <h1>Filtered Left Join</h1>
+                <p>Used to get the results only in left table</p>
+                <img src="img/slide_09.png">
+            </section>
+            <section>
+                <h1>Filtered Left join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+LEFT OUTER JOIN table_b B
+ON A.name = B.name
+WHERE B.id IS null</code></pre>
+            </section>
+            <section>
+                <h1>Filtered Left Join</h1>
+                <img src="img/slide_10.png">
+            </section>
+        </section>
+        <section id="right-join">
+            <section>
+                <h1>Right Join</h1>
+                <p>Used to get the results in the right table</p>
+                <img src="img/slide_13.png">
+            </section>
+            <section>
+                <h1>Right join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+RighT OUTER JOIN table_b B
+ON A.name = B.name</code></pre>
+            </section>
+            <section>
+                <h1>RIght Join</h1>
+                <img src="img/slide_14.png">
+            </section>
+        </section>
+        <section id="filtered-right-join">
+            <section>
+                <h1>Filtered Right Join</h1>
+                <p>Used to get the results only in right table</p>
+                <img src="img/slide_15.png">
+            </section>
+            <section>
+                <h1>Filtered Right join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+RIGHT OUTER JOIN table_b B
+ON A.name = B.name
+WHERE A.id IS null</code></pre>
+            </section>
+            <section>
+                <h1>Filtered Right Join</h1>
+                <img src="img/slide_16.png">
+            </section>
+        </section>
+        <section id="filtered-full-outer-join">
+            <section>
+                <h1>Filtered Full OUter Join</h1>
+                <p>Used to get the results only in one table</p>
+                <img src="img/slide_11.png">
+            </section>
+            <section>
+                <h1>Filtered Full Outer Join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+FULL OUTER JOIN table_b B
+ON A.name = B.name
+WHERE A.id IS null
+OR B.id IS null</code></pre>
+            </section>
+            <section>
+                <h1>Filtered Outer Join</h1>
+                <img src="img/slide_12.png">
+            </section>
+        </section>
+        <section id="cross-join">
+            <section>
+                <h1>Cross Join</h1>
+                <p>Used to get every row in each table paired with every row in the other table.</p>
+                <p>There is no good venn diagram analogy for this.</p>
+            </section>
+            <section>
+                <h1>Cross join</h1>
+                <h2>Example</h2>
+                <pre class="sql"><code>SELECT * FROM table_a A
+CROSS JOIN table_b B</code></pre>
+            </section>
+            <section>
+                <h1>Cross Join</h1>
+                <img src="img/slide_17.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 1</h1>
+            </section>
+            <section>
+                <p class="question">Each record in the table department represents a department which might hire some employees. Each record in the table employee represents an employee who works for one of the departments from the table department. The salary of each employee is known. (However, the locations of the departments are not relevant here.)</p>
+                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in the table department that hire at least one employee, the number of people they employ and the sum of salaries in each department. The table should be ordered by dept_id (in increasing order)</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT dept_id, count(*) count,
+    sum(salary) sum_of_salary
+FROM employee
+GROUP BY dept_id</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_19.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 2</h1>
+            </section>
+            <section>
+                <p class="question">Each record in the table department represents a department which might hire some employees. Each record in the table employee represents an employee who works for one of the departments from the table department. The salary of each employee is known. (However, the locations of the departments are not relevant here.)</p>
+                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in the table department, the number of people they employ and the sum of salaries in each department. The table should be ordered by dept_id (in increasing order)</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT d.dept_id, count(e.dept_id) count,
+    coalesce(sum(salary),0) sum_of_salary
+FROM department d
+LEFT JOIN employee E ON d.dept_id = e.dept_id
+GROUP BY d.dept_id</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_18.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 3</h1>
+            </section>
+            <section>
+                <p class="question">You would like to compute the total number of tickets sold for each movie. Then you would like to rank all movies by popularity.</p>
+                <p class="question">Write an SQL query that returns a popularity ranking of all movies described in any row of the table movies. For each movie you should provide its id and title and the total number of tickets sold for it (sold_tickets). The table should be ordered by its sold_tickets column (in decreasing order). In case of a tie, order the rows by the id column (in increasing order).</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT M.id, M.title,
+    COALESCE(SUM(R.number_of_tickets), 0) AS sold_tickets
+FROM movies M
+LEFT JOIN reservations R
+ON M.id = R.movie_id
+GROUP BY M.id, M.title
+ORDER BY sold_tickets DESC, id</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_20.png">
+            </section>
+        </section>
+        <section>
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
+</html>

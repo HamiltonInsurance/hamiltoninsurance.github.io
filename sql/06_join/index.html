@@ -238,12 +238,163 @@ CROSS JOIN table_b B</code></pre>
             </section>
         </section>
         <section>
+            <h1>Exercises</h1>
+        </section>
+        <section>
+            <h1>New Tables</h1>
+            <ul>
+                <li><a href="../../assets/data/airlines.csv">airlines</a></li>
+                <li><a href="../../assets/data/airports.csv">airports</a></li>
+                <li><a href="../../assets/data/plane_routes.csv">plane routes</a></li>
+                <li><a href="../../assets/data/planes.csv">planes</a></li>
+                <li><a href="../../assets/data/routes.csv">routes</a></li>
+            </ul>
+        </section>
+        <section>
             <section>
                 <h1>Exercise 1</h1>
             </section>
             <section>
-                <p class="question">Each record in the table department represents a department which might hire some employees. Each record in the table employee represents an employee who works for one of the departments from the table department. The salary of each employee is known. (However, the locations of the departments are not relevant here.)</p>
-                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in the table department that hire at least one employee, the number of people they employ and the sum of salaries in each department. The table should be ordered by dept_id (in increasing order)</p>
+                <p class="question">Find a list of all the air lines which fly to Bermuda.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Distinct(A.alias)
+FROM routes R
+    INNER JOIN airlines A
+    ON A.airline_id = R.airline_id
+WHERE to_airport = 'BDA'</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_21.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 2</h1>
+            </section>
+            <section>
+                <p class="question">Find a list of all the air lines which fly to Bermuda and don't operate a code
+                    share.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT Distinct(A.alias)
+FROM routes R
+    INNER JOIN airlines A
+    ON A.airline_id = R.airline_id
+WHERE to_airport = 'BDA'
+    AND codeshare IS NULL</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_21.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 3</h1>
+            </section>
+            <section>
+                <p class="question">How many airports can you get to from Bermuda with one change.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT COUNT(DISTINCT(B.to_airport_id)) count
+FROM routes A INNER JOIN routes B
+ON A.to_airport_id = B.from_airport_id
+WHERE A.from_airport = 'BDA'
+</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_23.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 4</h1>
+            </section>
+            <section>
+                <p class="question">How many airports can you get to from Bermuda with one change of plane and no change
+                    of airline.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT COUNT(DISTINCT(B.to_airport_id)) count
+FROM routes A INNER JOIN routes B
+ON A.to_airport_id = B.from_airport_id
+    AND A.airline_id = B.airline_id
+WHERE A.from_airport = 'BDA'
+</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_24.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 5</h1>
+            </section>
+            <section>
+                <p class="question">Create a list of countries and the number of different airports you can get to in
+                    each one, with one change of plane on no change of airline.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT country, count(*) count FROM (SELECT DISTINCT C.* FROM routes A INNER JOIN routes B
+ON A.to_airport_id = B.from_airport_id AND A.airline_id = B.airline_id
+INNER JOIN airports C ON C.airport_id = B.to_airport_id
+WHERE A.from_airport = 'BDA') AS X
+GROUP BY country
+ORDER BY count desc
+</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_25.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 6</h1>
+            </section>
+            <section>
+                <p class="question">How many different type of plane fly to Bermuda.</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT COUNT(DISTINCT(plane_iata)) count
+FROM routes R
+    INNER JOIN plane_routes P
+    ON P.route_id = R.route_id
+WHERE R.from_airport = 'BDA'</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_27.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 7</h1>
+            </section>
+            <section>
+                <p class="question">Get a list of the names of the planes that fly to Bermuda</p>
+            </section>
+            <section>
+                <pre class="sql"><code>SELECT DISTINCT A.name
+FROM routes R
+    INNER JOIN plane_routes P ON P.route_id = R.route_id
+    INNER JOIN planes A ON A.iata = plane_iata
+WHERE R.from_airport = 'BDA'</code></pre>
+            </section>
+            <section>
+                <img src="img/slide_26.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Exercise 8</h1>
+            </section>
+            <section>
+                <p class="question">Each record in the table department represents a department which might hire some
+                    employees. Each record in the table employee represents an employee who works for one of the
+                    departments from the table department. The salary of each employee is known. (However, the locations
+                    of the departments are not relevant here.)</p>
+                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in
+                    the table department that hire at least one employee, the number of people they employ and the sum
+                    of salaries in each department. The table should be ordered by dept_id (in increasing order)</p>
             </section>
             <section>
                 <pre class="sql"><code>SELECT dept_id, count(*) count,
@@ -257,11 +408,16 @@ GROUP BY dept_id</code></pre>
         </section>
         <section>
             <section>
-                <h1>Exercise 2</h1>
+                <h1>Exercise 9</h1>
             </section>
             <section>
-                <p class="question">Each record in the table department represents a department which might hire some employees. Each record in the table employee represents an employee who works for one of the departments from the table department. The salary of each employee is known. (However, the locations of the departments are not relevant here.)</p>
-                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in the table department, the number of people they employ and the sum of salaries in each department. The table should be ordered by dept_id (in increasing order)</p>
+                <p class="question">Each record in the table department represents a department which might hire some
+                    employees. Each record in the table employee represents an employee who works for one of the
+                    departments from the table department. The salary of each employee is known. (However, the locations
+                    of the departments are not relevant here.)</p>
+                <p class="question">Write an SQL query that returns a table comprising all the departments (dept_id) in
+                    the table department, the number of people they employ and the sum of salaries in each department.
+                    The table should be ordered by dept_id (in increasing order)</p>
             </section>
             <section>
                 <pre class="sql"><code>SELECT d.dept_id, count(e.dept_id) count,
@@ -276,11 +432,15 @@ GROUP BY d.dept_id</code></pre>
         </section>
         <section>
             <section>
-                <h1>Exercise 3</h1>
+                <h1>Exercise 10</h1>
             </section>
             <section>
-                <p class="question">You would like to compute the total number of tickets sold for each movie. Then you would like to rank all movies by popularity.</p>
-                <p class="question">Write an SQL query that returns a popularity ranking of all movies described in any row of the table movies. For each movie you should provide its id and title and the total number of tickets sold for it (sold_tickets). The table should be ordered by its sold_tickets column (in decreasing order). In case of a tie, order the rows by the id column (in increasing order).</p>
+                <p class="question">You would like to compute the total number of tickets sold for each movie. Then you
+                    would like to rank all movies by popularity.</p>
+                <p class="question">Write an SQL query that returns a popularity ranking of all movies described in any
+                    row of the table movies. For each movie you should provide its id and title and the total number of
+                    tickets sold for it (sold_tickets). The table should be ordered by its sold_tickets column (in
+                    decreasing order). In case of a tie, order the rows by the id column (in increasing order).</p>
             </section>
             <section>
                 <pre class="sql"><code>SELECT M.id, M.title,
